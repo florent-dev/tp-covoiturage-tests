@@ -35,4 +35,12 @@ class TrajetTest extends TestCase
         $this->assertEquals($lieu, $this->trajet->getLieuDepart());
         $this->assertContains($this->trajet, $lieu->getDepartTrajets());
     }
+
+    public function testTrajetLieuArrivee() {
+        $lieu = new Lieu();
+        $lieu->addArriveeTrajet($this->trajet);
+        $this->trajet->setLieuArrivee($lieu);
+        $this->assertEquals($lieu, $this->trajet->getLieuArrivee());
+        $this->assertContains($this->trajet, $lieu->getArriveeTrajets());
+    }
 }
