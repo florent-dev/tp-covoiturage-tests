@@ -20,4 +20,10 @@ class TrajetTest extends TestCase
         $this->trajet->setPlaces(2);
         $this->assertEquals(2, $this->trajet->getPlaces());
     }
+
+    public function testTrajetDatetime() {
+        $date = new \DateTime();
+        $this->trajet->setDatetime($date);
+        $this->assertEquals($date, $this->trajet->getDatetime());
+    }
 }
