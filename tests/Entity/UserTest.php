@@ -24,4 +24,10 @@ class UserTest extends TestCase
         $this->user->setPrenom("Jean-Pierre");
         $this->assertEquals("Jean-Pierre", $this->user->getPrenom());
     }
+
+    public function testUserPassword(){
+        $this->user->setPassword("kiwiparty");
+        $this->assertEquals("kiwiparty", $this->user->getPassword());
+    }
+
 }
