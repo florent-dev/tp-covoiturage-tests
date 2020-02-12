@@ -21,6 +21,11 @@ class User
      */
     private $nom;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $prenom;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,5 +41,21 @@ class User
         $this->nom = $nom;
 
         return $this;
+    }
+
+    /**
+     * @param mixed $prenom
+     */
+    public function setPrenom($prenom): void
+    {
+        $this->prenom = $prenom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
     }
 }
