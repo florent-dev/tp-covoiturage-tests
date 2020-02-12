@@ -30,7 +30,9 @@ class TrajetTest extends TestCase
 
     public function testTrajetLieuDepart() {
         $lieu = new Lieu();
+        $lieu->addDepartTrajet($this->trajet);
         $this->trajet->setLieuDepart($lieu);
         $this->assertEquals($lieu, $this->trajet->getLieuDepart());
+        $this->assertContains($this->trajet, $lieu->getDepartTrajets());
     }
 }
