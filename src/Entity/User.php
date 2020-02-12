@@ -36,6 +36,11 @@ class User
      */
     private $email;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $username;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -99,5 +104,21 @@ class User
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 }
