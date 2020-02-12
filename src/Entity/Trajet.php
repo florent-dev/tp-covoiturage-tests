@@ -16,8 +16,25 @@ class Trajet
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $places;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPlaces(): ?int
+    {
+        return $this->places;
+    }
+
+    public function setPlaces(int $places): self
+    {
+        $this->places = $places;
+
+        return $this;
     }
 }
