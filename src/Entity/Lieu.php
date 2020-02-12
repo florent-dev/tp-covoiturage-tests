@@ -21,6 +21,11 @@ class Lieu
      */
     private $nom;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $latitude;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,5 +45,17 @@ class Lieu
     public function getNom()
     {
         return $this->nom;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(float $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
     }
 }
