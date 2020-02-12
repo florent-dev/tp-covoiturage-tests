@@ -26,6 +26,11 @@ class User
      */
     private $prenom;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -57,5 +62,21 @@ class User
     public function getPrenom()
     {
         return $this->prenom;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }
