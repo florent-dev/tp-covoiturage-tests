@@ -1,5 +1,6 @@
 ﻿<?php
 
+use App\Entity\Trajet;
 use PHPUnit\Framework\TestCase;
 
 class TrajetTest extends TestCase
