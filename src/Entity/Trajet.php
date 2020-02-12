@@ -21,6 +21,11 @@ class Trajet
      */
     private $places;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $datetime;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,6 +39,18 @@ class Trajet
     public function setPlaces(int $places): self
     {
         $this->places = $places;
+
+        return $this;
+    }
+
+    public function getDatetime(): ?\DateTimeInterface
+    {
+        return $this->datetime;
+    }
+
+    public function setDatetime(\DateTimeInterface $datetime): self
+    {
+        $this->datetime = $datetime;
 
         return $this;
     }
