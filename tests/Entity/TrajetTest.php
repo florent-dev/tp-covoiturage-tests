@@ -16,4 +16,8 @@ class TrajetTest extends TestCase
         $this->assertNull($this->trajet->getId());
     }
 
+    public function testTrajetPlaces() {
+        $this->trajet->setPlaces(2);
+        $this->assertEquals(2, $this->trajet->getPlaces());
+    }
 }
