@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +32,16 @@ class Lieu
      * @ORM\Column(type="float")
      */
     private $longitude;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Trajet", mappedBy="lieuDepart")
+     */
+    private $departTrajets;
+
+    public function __construct()
+    {
+        $this->departTrajets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -72,6 +84,37 @@ class Lieu
     public function setLongitude(float $longitude): self
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trajet[]
+     */
+    public function getDepartTrajets(): Collection
+    {
+        return $this->departTrajets;
+    }
+
+    public function addDepartTrajet(Trajet $departTrajet): self
+    {
+        if (!$this->departTrajets->contains($departTrajet)) {
+            $this->departTrajets[] = $departTrajet;
+            $departTrajet->setLieuDepart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepartTrajet(Trajet $departTrajet): self
+    {
+        if ($this->departTrajets->contains($departTrajet)) {
+            $this->departTrajets->removeElement($departTrajet);
+            // set the owning side to null (unless already changed)
+            if ($departTrajet->getLieuDepart() === $this) {
+                $departTrajet->setLieuDepart(null);
+            }
+        }
 
         return $this;
     }
