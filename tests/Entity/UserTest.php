@@ -14,6 +14,6 @@ class UserTest extends TestCase
     public function testUserNom() {
         $user = new User();
         $user->setNom('Martin');
-        $this->assertEquals("martin", $user->getNom());
+        $this->assertEquals("Martin", $user->getNom());
     }
 }
