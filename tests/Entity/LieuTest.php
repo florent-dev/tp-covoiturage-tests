@@ -5,18 +5,24 @@ use PHPUnit\Framework\TestCase;
 
 class LieuTest extends TestCase
 {
-    protected $user;
+    protected $lieu;
 
-    public function setUp(){
+    public function setUp(): void {
         $this->lieu = new Lieu();
     }
+
     public function testNewLieu() {
         $this->assertInstanceOf(Lieu::class, $this->lieu);
         $this->assertNull($this->lieu->getId());
     }
 
-    public function testLieuNom(){
+    public function testLieuNom() {
         $this->lieu->setNom('Grenoble');
         $this->assertEquals("Grenoble", $this->lieu->getNom());
+    }
+
+    public function testLieuLatitude() {
+        $this->lieu->setLatitude(0.01);
+        $this->assertEquals(0.01, $this->lieu->getLatitude());
     }
 }
