@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,16 @@ class User
      * @ORM\Column(type="string", length=255)
      */
     private $username;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Trajet", mappedBy="conducteur")
+     */
+    private $conducteurTrajets;
+
+    public function __construct()
+    {
+        $this->conducteurTrajets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,5 +132,36 @@ class User
     public function getUsername()
     {
         return $this->username;
+    }
+
+    /**
+     * @return Collection|Trajet[]
+     */
+    public function getConducteurTrajets(): Collection
+    {
+        return $this->conducteurTrajets;
+    }
+
+    public function addConducteurTrajet(Trajet $trajet): self
+    {
+        if (!$this->conducteurTrajets->contains($trajet)) {
+            $this->conducteurTrajets[] = $trajet;
+            $trajet->setConducteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConducteurTrajet(Trajet $trajet): self
+    {
+        if ($this->conducteurTrajets->contains($trajet)) {
+            $this->conducteurTrajets->removeElement($trajet);
+            // set the owning side to null (unless already changed)
+            if ($trajet->getConducteur() === $this) {
+                $trajet->setConducteur(null);
+            }
+        }
+
+        return $this;
     }
 }

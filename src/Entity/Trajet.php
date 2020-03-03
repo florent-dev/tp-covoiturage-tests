@@ -38,6 +38,12 @@ class Trajet
      */
     private $lieuArrivee;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="trajets")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $conducteur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +93,18 @@ class Trajet
     public function setLieuArrivee(?Lieu $lieuArrivee): self
     {
         $this->lieuArrivee = $lieuArrivee;
+
+        return $this;
+    }
+
+    public function getConducteur(): ?User
+    {
+        return $this->conducteur;
+    }
+
+    public function setConducteur(?User $conducteur): self
+    {
+        $this->conducteur = $conducteur;
 
         return $this;
     }
