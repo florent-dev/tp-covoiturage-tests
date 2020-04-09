@@ -6,12 +6,12 @@ namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class UserControllerTest extends WebTestCase
 {
-    public function testHomepage()
+    public function testInscription()
     {
         $client = self::createClient();
-        $client->request('GET', '/');
+        $client->request('GET', '/inscription');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }
