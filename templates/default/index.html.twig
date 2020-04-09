@@ -6,15 +6,17 @@
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    p { padding: 5px; background: #000000; color: #ffff; }
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Accueil</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/laragon/www/Cours/Tests/TP2-covoiturage/src/Controller/DefaultControllerTest.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/laragon/www/Cours/Tests/TP2-covoiturage/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
-    </ul>
+    <div>Bienvenue sur votre site de covoiturage.</div>
+
+    {% if app.user %}
+        <p>Vous êtes connecté <b>{{ app.user.username }}</b> ✅</p>
+        <a href="{{ path('logout') }}">Se déconnecter</a>
+    {% endif %}
 </div>
 {% endblock %}
