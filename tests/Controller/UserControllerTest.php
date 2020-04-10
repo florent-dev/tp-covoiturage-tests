@@ -40,5 +40,9 @@ class UserControllerTest extends WebTestCase
 
         // Notre page nous retourne le succès de l'opération.
         $this->assertSelectorExists('.flash-success');
+
+        // On supprime notre user test.
+        $em->remove($user);
+        $em->flush();
     }
 }
