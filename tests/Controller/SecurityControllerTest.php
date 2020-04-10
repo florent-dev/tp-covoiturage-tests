@@ -21,7 +21,7 @@ class SecurityControllerTest extends WebTestCase
         self::$user->setEmail('jean.dupont@test.com');
         self::$user->setNom('Dupont');
         self::$user->setPrenom('Jean');
-        self::$user->setPassword('mdp');
+        self::$user->setPassword('$2y$10$3xkDUy1LAWIlDOzCac2EceEViOtIWb2QSwwWTJ0zTlGMbvSSHQjU6'); // 'test'
         self::$user->setUsername('jdupont');
         $em->persist(self::$user);
         $em->flush();
@@ -33,10 +33,38 @@ class SecurityControllerTest extends WebTestCase
         $this->client = self::createClient();
     }
 
-    public function testLogin()
+    public function testLoginPage()
     {
         $this->client->request('GET', '/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testLoginActionSuccess()
+    {
+        $crawler = $this->client->request('GET', '/login');
+
+        $form = $crawler->selectButton("Sign in")->form();
+        $form['username'] = 'test';
+        $form['password'] = 'test';
+        $crawler = $this->client->submit($form);
+
+        // Succès du login et redirection.
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testLoginActionFailed()
+    {
+        $crawler = $this->client->request('GET', '/login');
+
+        $form = $crawler->selectButton("Connexion")->form();
+        $form['username'] = 'test';
+        $form['password'] = 'mdpincorrect';
+        $crawler = $this->client->submit($form);
+
+        $this->client->followRedirect();
+
+        // Echec de l'authentification, message d'erreur.
+        $this->assertSelectorExists('.alert-danger');
     }
 
     // Le createclient ne fonctionne pas, en manuel il y a la redirection, en test rien du tout.
