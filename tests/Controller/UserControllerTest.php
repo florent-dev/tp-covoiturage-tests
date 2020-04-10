@@ -8,18 +8,41 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserControllerTest extends WebTestCase
 {
+    /** @var User $user */
+    static $user;
+
+    protected $client;
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        /** @var EntityManagerInterface $em */
+        $em = self::bootKernel()->getContainer()->get('doctrine')->getManager();
+        self::$user = new User();
+        self::$user->setEmail('jean.dupont@test.com');
+        self::$user->setNom('Dupont');
+        self::$user->setPrenom('Jean');
+        self::$user->setPassword('mdp');
+        self::$user->setUsername('jdupont');
+        $em->persist(self::$user);
+        $em->flush();
+        self::ensureKernelShutdown();
+    }
+
+    protected function setUp(): void
+    {
+        $this->client = self::createClient();
+    }
+
     public function testInscription()
     {
-        $client = self::createClient();
-        $client->request('GET', '/inscription');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->client->request('GET', '/inscription');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testInscriptionForm()
     {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/inscription');
+        $crawler = $this->client->request('GET', '/inscription');
 
         $form = $crawler->selectButton("S'inscrire")->form();
         $form['registration_form[username]'] = 'UserTest';
@@ -27,22 +50,33 @@ class UserControllerTest extends WebTestCase
         $form['registration_form[prenom]'] = 'TestPrenom';
         $form['registration_form[email]'] = 'test@test.com';
         $form['registration_form[password]'] = 'test';
-        $crawler = $client->submit($form);
+        $crawler = $this->client->submit($form);
 
         /** @var EntityManagerInterface $em */
         $em = $this->bootKernel()->getContainer()->get('doctrine')->getManager();
 
-        /** @var User $user */
-        $user = $em->getRepository(User::class)->findOneBy(['username' => 'UserTest']);
+        /** @var User $registrationUser */
+        $registrationUser = $em->getRepository(User::class)->findOneBy(['username' => 'UserTest']);
 
         // On vérifie que notre user a bien été sauvegardé.
-        $this->assertSame('TestPrenom', $user->getPrenom());
+        $this->assertSame('TestPrenom', $registrationUser->getPrenom());
 
         // Notre page nous retourne le succès de l'opération.
         $this->assertSelectorExists('.flash-success');
 
         // On supprime notre user test.
-        $em->remove($user);
+        $em->remove($registrationUser);
         $em->flush();
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+        /** @var EntityManagerInterface $em */
+        $em = self::bootKernel()->getContainer()->get('doctrine')->getManager();
+        $users = $em->getRepository(User::class)->findBy(['email' => 'jean.dupont@test.com']);
+        foreach ($users as $user) $em->remove($user);
+        $em->flush();
+        $em->close();
     }
 }
