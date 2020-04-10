@@ -3,29 +3,13 @@
  {% block title %}Log in!{% endblock %}
 
  {% block body %}
-     <form method="post">
-         {% if app.user %}
-             <div class="mb-3">
-                 You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+     <h1>S'inscrire</h1>
+     {% for label, messages in app.flashes %}
+         {% for message in messages %}
+             <div class="alert alert-{{ label }} flash-{{ label }}">
+                 {{ message }}
              </div>
-         {% else %}
-            Pas connecté
-         {% endif %}
-
-         <h1 class="h3 mb-3 font-weight-normal">Inscrivez-vous</h1>
-         <label for="inputUsername">Utilisateur</label>
-         <input type="text" name="username" id="inputUsername" class="form-control" required autofocus>
-         <label for="inputPassword">Mot de passe</label>
-         <input type="password" name="password" id="inputPassword" class="form-control" required>
-         <label for="inputPassword">Répéter le mdp</label>
-         <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-         <input type="hidden" name="_csrf_token"
-                value="{{ csrf_token('authenticate') }}"
-         >
-
-         <button class="btn btn-lg btn-primary" type="submit">
-             S'inscrire
-         </button>
-     </form>
+         {% endfor %}
+     {% endfor %}
+     {{ form(form) }}
  {% endblock %}
